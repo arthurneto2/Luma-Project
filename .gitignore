@@ -1,0 +1,18 @@
+# IDE settings
+.idea/
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# .NET / C# build output
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# OS files
+.DS_Store
+Thumbs.db
