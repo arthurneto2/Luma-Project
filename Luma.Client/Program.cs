@@ -55,9 +55,10 @@ class Program
         Console.WriteLine($"Executando no NÍVEL {(level2 ? "2 (Avançado - Ventos Solares e Relatividade)" : "1 (Padrão)")}");
         Console.ResetColor();
 
-        // 2. Read environment variables
-        const string username = "SEU NOME";
-        const string email = "SEU EMAIL";
+        // 2. Credenciais: variáveis de ambiente LUMA_USERNAME e LUMA_EMAIL, ou pergunta no console.
+        //    Nada fica fixo no código.
+        var username = ReadCredential("LUMA_USERNAME", "Nome de usuário");
+        var email = ReadCredential("LUMA_EMAIL", "E-mail");
 
         Console.WriteLine($"Username: {username}");
         Console.WriteLine($"Email: {email}");
@@ -94,6 +95,32 @@ class Program
             attempt++;
             Console.WriteLine("Aguardando 3 segundos antes de reiniciar o fluxo...");
             await Task.Delay(3000);
+        }
+    }
+
+    private static string ReadCredential(string envVar, string label)
+    {
+        var value = Environment.GetEnvironmentVariable(envVar);
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            return value.Trim();
+        }
+
+        while (true)
+        {
+            Console.Write($"{label} (ou defina a variável {envVar}): ");
+            var input = Console.ReadLine();
+
+            if (input is null)
+            {
+                throw new InvalidOperationException(
+                    $"{label} não informado. Defina a variável de ambiente {envVar}.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                return input.Trim();
+            }
         }
     }
 
